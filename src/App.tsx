@@ -73,9 +73,31 @@ function App(): JSX.Element {
       setWinner('Draw game... ⌛️');
     }
   };
+  const onChangeItem = (itemNumber: number) => {
+    if (winner) {
+      return Snackbar.show({
+        text: winner,
+        backgroundColor: '#000000',
+        textColor: '#ffffff',
+      });
+    }
+    if (gameState[itemNumber]) {
+      gameState[itemNumber] = isCross ? 'cross' : 'circle';
+      setIsCross(!isCross);
+    } else {
+      return Snackbar.show({
+        text: 'Position is already filled',
+        backgroundColor: 'red',
+        textColor: '#fff',
+      });
+    }
+    checkWinner();
+  };
+
   return (
     <SafeAreaView>
       <StatusBar />
+      {}
     </SafeAreaView>
   );
 }
