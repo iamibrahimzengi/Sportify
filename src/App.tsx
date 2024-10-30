@@ -1,13 +1,15 @@
 import React, {useState} from 'react';
 import {
+  FlatList,
+  Pressable,
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
+import Icons from './components/Icons';
 
 function App(): JSX.Element {
   const [isCross, setIsCross] = useState<boolean>(false);
@@ -97,7 +99,40 @@ function App(): JSX.Element {
   return (
     <SafeAreaView>
       <StatusBar />
-      {}
+      {winner ? (
+        <View style={[styles.playerInfo, styles.winnerInfo]}>
+          <Text style={styles.winnerTxt}>{winner}</Text>
+        </View>
+      ) : (
+        <View
+          style={[
+            styles.playerInfo,
+            isCross ? styles.playerX : styles.playerO,
+          ]}>
+          <Text style={styles.gameTurnTxt}>
+            Player {isCross ? 'X' : 'O'}s' Turn
+          </Text>
+        </View>
+      )}
+      <FlatList
+        numColumns={3}
+        data={gameState}
+        style={styles.grid}
+        renderItem={({item, index}) => (
+          <Pressable
+            key={index}
+            style={styles.card}
+            onPress={() => onChangeItem(index)}>
+            <Icons name={item} />
+          </Pressable>
+        )}
+      />
+
+      <Pressable style={styles.gameBtn} onPress={reloadGameState}>
+        <Text style={styles.gameBtnText}>
+          {winner ? 'Start new Game' : 'reload the game'}
+        </Text>
+      </Pressable>
     </SafeAreaView>
   );
 }
